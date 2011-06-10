@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="fatwireManager" class="org.entermedia.fatwire.FatwireManager" singleton="false" >
+		<property name="userManager"><ref bean="userManager"/></property>
+		<property name="xmlArchive"><ref bean="xmlArchive"/></property>
+	</bean>
+	
+	<bean id="fatwireModule" class="org.entermedia.fatwire.FatwireModule" >
+		<property name="fatwireManager"><ref bean="fatwireManager"/></property>
+	</bean>
+</beans>
