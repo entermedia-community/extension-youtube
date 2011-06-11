@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/wem-sso-api-1.0.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/entermedia"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/entermedia-server"/>
 	<classpathentry kind="lib" path="lib/cas-client-core-3.1.9.jar"/>
 	<classpathentry kind="lib" path="lib/wem-sso-api-cas-1.0.jar"/>
