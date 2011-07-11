@@ -27,6 +27,7 @@
 			- "deployDir" is set by anthill.publish.dir
 		========================================================================
 	--> 
+	<property environment="env" />
 	<property name="version"  value="1.${env.BUILD_NUMBER}"/>
   	<property name="deployDir" location="deploy"/>
   	
