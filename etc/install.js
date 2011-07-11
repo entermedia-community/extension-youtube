@@ -19,7 +19,7 @@ unziper.unzip(  tmp + "/extension-fatwire.zip",  tmp );
 
 log.add("3. REPLACE LIBS");
 var files = new FileUtils();
-files.deleteMatch( web + "/lib/entermedia-fatwire*.jar");
+files.deleteMatch( web + "/lib/extension-fatwire*.jar");
 files.deleteMatch( web + "/lib/wem*.jar");
 files.deleteMatch( web + "/lib/spring*.jar");
 files.deleteMatch( web + "/lib/unoil*.jar");
@@ -34,7 +34,7 @@ files.deleteMatch( web + "/lib/jersey-client*.jar");
 files.deleteMatch( web + "/lib/cas-client-core*.jar");
 
 files.copyFileByMatch( tmp + "/lib/wem*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/lib/entermedia-fatwire*.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/extension-fatwire*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/spring*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/unoil*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/ridl*.jar", web + "/lib/");
