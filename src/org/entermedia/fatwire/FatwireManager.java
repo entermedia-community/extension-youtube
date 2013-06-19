@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
@@ -18,12 +20,16 @@ import org.openedit.xml.XmlFile;
 import com.fatwire.rest.beans.AssetBean;
 import com.fatwire.rest.beans.AssetInfo;
 import com.fatwire.rest.beans.AssetsBean;
+import com.fatwire.rest.beans.Association;
+import com.fatwire.rest.beans.Associations;
 import com.fatwire.rest.beans.Attribute;
 import com.fatwire.rest.beans.Attribute.Data;
+import com.fatwire.rest.beans.Blob;
 import com.fatwire.rest.beans.Site;
 import com.fatwire.rest.beans.SitesBean;
 import com.fatwire.wem.sso.SSO;
 import com.fatwire.wem.sso.SSOException;
+import com.fatwire.wem.sso.SSOSession;
 import com.openedit.hittracker.HitTracker;
 import com.openedit.hittracker.SearchQuery;
 import com.openedit.page.manage.PageManager;
@@ -31,6 +37,7 @@ import com.openedit.users.User;
 import com.openedit.users.UserManager;
 import com.openedit.util.PathUtilities;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
@@ -240,13 +247,22 @@ public class FatwireManager {
         inFwAsset.getAttributes().add(catattr);
 	}
 	
-	public AssetBean pushAsset(Asset inAsset, String inType, String inSubtype, User inUser, String inUrlHome, String inUsage) throws IOException
+	public AssetBean pushAsset(Asset inAsset, User inUser, String inUrlHome, String inUsage, String exportName) throws IOException
 	{
-		return pushAsset(inAsset, getSite(), inType, inSubtype, inUser, inUrlHome, inUsage);
+		return pushAsset(inAsset, getSite(), "Image_C", "Image", inUser, inUrlHome, inUsage, exportName);
 	}
 	
-	public AssetBean pushAsset(Asset inAsset, String inSite, String inType, String inSubtype, User inUser, String inUrlHome, String inUsage) throws IOException
+	public AssetBean pushAsset(Asset inAsset, String inType, String inSubtype, User inUser, String inUrlHome, String inUsage) throws IOException
 	{
+		return pushAsset(inAsset, getSite(), inType, inSubtype, inUser, inUrlHome, inUsage, null);
+	}
+	
+	public AssetBean pushAsset(Asset inAsset, String inSite, String inType, String inSubtype, User inUser, String inUrlHome, String inUsage, String inExportName) throws IOException
+	{
+		log.info("pushAsset ("+(inAsset!=null ? inAsset.getId() : "null")+","+
+				(inSite)+","+(inType)+","+(inSubtype)+","+(inUser!=null ? inUser.getName() : "null")+","+
+				(inUrlHome)+","+(inUsage)+","+(inExportName)+")");
+		
 		if(inAsset.get("fatwireid") != null)
 		{
 			//don't send the asset to fatwire again, maybe in future we can can sync fields
@@ -256,8 +272,16 @@ public class FatwireManager {
 		
 		//convert our asset in to an asset bean
 		AssetBean fwasset = new AssetBean();
-		fwasset.setId("entermedia" + ":" + inAsset.getId());
-		fwasset.setName(inAsset.getName());
+		fwasset.setId(/*"entermedia" + ":" + */inAsset.getId());
+		if (inExportName!=null && !inExportName.isEmpty())
+		{
+			fwasset.setName(inExportName);
+		}
+		else
+		{
+			fwasset.setName(inAsset.getName());
+		}
+		
 		fwasset.setDescription(inAsset.get("assettitle"));
 		fwasset.setSubtype(inSubtype);
 		
@@ -306,12 +330,30 @@ public class FatwireManager {
 		Client client = getClient();
 		String baseurl = getUrlBase();
 		String url = baseurl + "/sites/" + inSite + "/types/" + inType + "/assets/" + fwasset.getId();
+		
 		WebResource wr = client.resource(url);
+		
 		String ticket = getTicket(url, getSSOConfig());
+		log.info("FatWire ticket: "+ticket);
 		wr = wr.queryParam("ticket", ticket);
 		Builder builder = wr.header("Pragma", "auth-redirect=false");
 		
-		AssetBean ab = builder.put(AssetBean.class, fwasset);
+		AssetBean ab = null;
+		try
+		{
+			ab = builder.put(AssetBean.class, fwasset);
+		}
+		catch (UniformInterfaceException e)
+		{
+			log.error("UniformInterfaceException caught while issuing put(), "+e.getMessage(), e);
+			//trim message
+			String errorMessage = e.getMessage();
+			if (errorMessage.contains("returned a response status of"))
+			{
+				errorMessage = "UniformInterfaceException "+errorMessage.substring(errorMessage.indexOf("returned a response status of"));
+			}
+			throw new IOException(errorMessage,e);
+		}
 		
 		inAsset.setProperty("fatwireid", ab.getId());
 		inAsset.setProperty("fatwireexportedby", inUser.getUserName());
@@ -365,8 +407,7 @@ public class FatwireManager {
 			String ticket = SSO.getSSOSession(inConfig).getTicket(inUrl, username, password);
 			return ticket;
 		} catch (SSOException e) {
-			System.out.println("Couldn't Get Ticket");
-			e.printStackTrace();
+			log.error("unable to generate SSO Session Ticket, "+e.getMessage(),e);
 		}
 		return "";
 	}

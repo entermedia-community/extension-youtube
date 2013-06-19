@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/wem-sso-api-1.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/entermedia-server"/>
-	<classpathentry kind="lib" path="lib/cas-client-core-3.1.9.jar"/>
-	<classpathentry kind="lib" path="lib/wem-sso-api-cas-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-client-1.1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/rest-api-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-core-1.1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jodconverter-core-3.0-beta-3patch.jar"/>
-	<classpathentry kind="lib" path="lib/juh-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jurt-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/ridl-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/spring-aop-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-beans-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-context-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-context-support-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-core-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-web-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/spring-webmvc-2.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/unoil-3.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/11g/cas-client-core-3.1.9.jar"/>
+	<classpathentry kind="lib" path="lib/11g/jersey-client-1.1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/11g/jersey-core-1.1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/11g/jsr311-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/11g/rest-api-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/rest-api-local-impl-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-aop-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-beans-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-context-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-context-support-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-core-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-web-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/spring-webmvc-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/11g/wem-sso-api-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/wem-sso-api-cas-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/wem-sso-api-cas-plugin-cs-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/wem-sso-api-oam-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/11g/wem-sso-cas-integration-rest-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
