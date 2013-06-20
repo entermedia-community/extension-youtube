@@ -17,7 +17,7 @@
           casUrl - URL of the CAS installation
    -->
    <bean id="ssoconfig" class="com.fatwire.wem.sso.cas.conf.CASConfig">
+   <!-- http://dev11g.app.www.law.com:8080/cs returns ERROR when running multiticket but http://dev11g.app.www.law.com:8080/cas connects properly -->
      <property name="casUrl" value="http://dev11g.app.www.law.com:8080/cas" />
-     <!-- <property name="casRestPath" value="/v1" />-->
    </bean>
 </beans>
