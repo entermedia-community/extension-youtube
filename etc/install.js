@@ -11,11 +11,11 @@ var tmp = web + "/tmp";
 
 log.add("1. GET THE LATEST WAR FILE");
 var downloader = new Downloader();
-downloader.download( war, tmp + "/extension-fatwire.zip");
+downloader.download( war, tmp + "/extension-youtube.zip");
 
 log.add("2. UNZIP WAR FILE");
 var unziper = new ZipUtil();
-unziper.unzip(  tmp + "/extension-fatwire.zip",  tmp );
+unziper.unzip(  tmp + "/extension-youtube.zip",  tmp );
 
 log.add("3. REPLACE LIBS");
 var files = new FileUtils();
