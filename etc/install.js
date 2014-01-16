@@ -25,13 +25,10 @@ files.deleteMatch( web + "/lib/guava-*.jar");
 files.deleteMatch( web + "/lib/tools.jar");
 files.deleteMatch( web + "/WEB-INF/base/youtube/");
 
-
-
-
-files.copyFileByMatch( tmp + "/WEB-INF/lib/gdata-*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/WEB-INF/lib/google-*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/WEB-INF/lib/guava-*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/WEB-INF/lib/tools.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/gdata-*.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/google-*.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/guava-*.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/tools.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/youtube", web + "/WEB-INF/base/youtube");
 
 log.add("5. CLEAN UP");
