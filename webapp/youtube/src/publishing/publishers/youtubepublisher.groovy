@@ -175,11 +175,10 @@ public class youtubepublisher extends basepublisher implements Publisher
 			
 			// Set asset metadata field video id if available
 			String assetVideoIdField = inDestination.get("assetvideoidfield");
-			if(assetVideoIdField != null) {
-				if(assetVideoIdField != "") {
-					// Try to set metadata field on asset
-					inAsset.setProperty(assetVideoIdField, videoId);
-				}
+			if(assetVideoIdField != null && !assetVideoIdField.isEmpty()) {
+				// Try to set metadata field on asset
+				inAsset.setProperty(assetVideoIdField, videoId);
+				mediaArchive.saveAsset(inAsset,null);
 			}
 			
 			result.setPending(true);
