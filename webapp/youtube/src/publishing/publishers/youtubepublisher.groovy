@@ -172,6 +172,16 @@ public class youtubepublisher extends basepublisher implements Publisher
 			String videoId = yt.publish(file,title,description,mimeType,category,catlist,keylist,position);
 			yt.stopService();
 			inPublishRequest.setProperty("trackingnumber",videoId);
+			
+			// Set asset metadata field video id if available
+			String assetVideoIdField = inDestination.get("assetvideoidfield");
+			if(assetVideoIdField != null) {
+				if(assetVideoIdField != "") {
+					// Try to set metadata field on asset
+					inAsset.setProperty(assetVideoIdField, videoId);
+				}
+			}
+			
 			result.setPending(true);
 		}
 		else if (pubstatus.equals("pending"))
