@@ -110,9 +110,11 @@ public class youtubepublisher extends basepublisher implements Publisher
 				result.setErrorMessage("Title and description need to be defined on an asset for publication to YouTube");
 				return result;
 			}
-			String ytcats = inPublishRequest.get("youtubecategory");
-			String assetfield = inPublishRequest.get("assetfield");
-			String category = parseCategory(ytcats,assetfield,inAsset.getId());
+			
+//			String ytcats = inPublishRequest.get("youtubecategory");
+//			String assetfield = inPublishRequest.get("assetfield");
+			
+			String category = inPublishRequest.get("youtubecategory");
 			if (category == null)
 			{
 				result.setComplete(true);
@@ -172,16 +174,14 @@ public class youtubepublisher extends basepublisher implements Publisher
 			String videoId = yt.publish(file,title,description,mimeType,category,catlist,keylist,position);
 			yt.stopService();
 			inPublishRequest.setProperty("trackingnumber",videoId);
+			result.setPending(true);
 			
 			// Set asset metadata field video id if available
 			String assetVideoIdField = inDestination.get("assetvideoidfield");
 			if(assetVideoIdField != null && !assetVideoIdField.isEmpty()) {
-				// Try to set metadata field on asset
+				// set metadata field on asset
 				inAsset.setProperty(assetVideoIdField, videoId);
-				mediaArchive.saveAsset(inAsset,null);
 			}
-			
-			result.setPending(true);
 		}
 		else if (pubstatus.equals("pending"))
 		{
@@ -195,8 +195,13 @@ public class youtubepublisher extends basepublisher implements Publisher
 	
 	protected String parseCategory(String categories, String assets, String assetId)
 	{
-		if (categories == null || categories.isEmpty() || assets == null || assets.isEmpty())
+		if (categories == null || categories.isEmpty() || assets == null || assets.isEmpty()){
 			return null;
+		}
+		if (!categories.contains("|"))
+		{
+			return categories;
+		}
 		String [] toks1 = categories.split(" | ");
 		String [] toks2 = assets.split(" | ");
 		if (toks1.length != toks2.length)
