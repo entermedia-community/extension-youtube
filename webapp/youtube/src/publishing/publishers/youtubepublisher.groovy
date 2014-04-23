@@ -149,7 +149,7 @@ public class youtubepublisher extends basepublisher implements Publisher
 			}
 			Page inputpage = findInputPage(mediaArchive,inAsset,inPreset);
 			File file = new File(inputpage.getContentItem().getAbsolutePath());
-			String mimeType = mediaArchive.getOriginalDocument(inAsset).getMimeType();
+			String mimeType = inputpage.getMimeType(); //mediaArchive.getOriginalDocument(inAsset).getMimeType();
 			
 			//geolocation - optional
 			ArrayList<Double> position = new ArrayList<Double>();
@@ -172,6 +172,7 @@ public class youtubepublisher extends basepublisher implements Publisher
 			//start service and publish
 			yt.startService();
 			String videoId = yt.publish(file,title,description,mimeType,category,catlist,keylist,position);
+			log.info("tracking id from youtube $videoId");
 			yt.stopService();
 			inPublishRequest.setProperty("trackingnumber",videoId);
 			result.setPending(true);
