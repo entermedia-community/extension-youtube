@@ -95,7 +95,7 @@ public class youtubepublisher extends basepublisher implements Publisher
 			if (inAsset.get("keywords")==null || inAsset.get("keywords").isEmpty())
 			{
 				result.setComplete(true);
-				result.setErrorMessage("Tags need to be defined on an asset for publication to YouTube");
+				result.setErrorMessage("Tags need to be defined on an asset to publish to YouTube");
 				return result;
 			}
 			if (inAsset.get("category")==null || inAsset.get("category").isEmpty())
@@ -169,6 +169,13 @@ public class youtubepublisher extends basepublisher implements Publisher
 					position.add(new Double(Double.parseDouble(lngstr)));
 				}catch (Exception e){}
 			}
+			
+			//all set so change the state of the event to prevent others from trying to publish
+			Searcher queuesearcher = mediaArchive.getSearcherManager().getSearcher(mediaArchive.getCatalogId(), "publishqueue");
+			inPublishRequest.setProperty('status', 'pending');
+			inPublishRequest.setProperty("errordetails", " ");
+			queuesearcher.saveData(inPublishRequest, null);
+			
 			//start service and publish
 			yt.startService();
 			String videoId = yt.publish(file,title,description,mimeType,category,catlist,keylist,position);
@@ -179,7 +186,8 @@ public class youtubepublisher extends basepublisher implements Publisher
 			
 			// Set asset metadata field video id if available
 			String assetVideoIdField = inDestination.get("assetvideoidfield");
-			if(assetVideoIdField != null && !assetVideoIdField.isEmpty()) {
+			if(assetVideoIdField != null && !assetVideoIdField.isEmpty())
+			{
 				// set metadata field on asset
 				inAsset.setProperty(assetVideoIdField, videoId);
 			}
@@ -187,9 +195,12 @@ public class youtubepublisher extends basepublisher implements Publisher
 		else if (pubstatus.equals("pending"))
 		{
 			String videoId = inPublishRequest.get("trackingnumber");
-			yt.startService();
-			yt.updateVideoStatus(videoId, result);
-			yt.stopService();
+			if (videoId != null && !videoId.isEmpty())
+			{
+				yt.startService();
+				yt.updateVideoStatus(videoId, result);
+				yt.stopService();
+			}
 		}
 		return result;
 	}
@@ -339,11 +350,15 @@ public class YouTubeClientService
 		{
 			entry.setGeoCoordinates(new GeoRssWhere(position.get(0).doubleValue(),position.get(1).doubleValue()));
 		}
-		MediaFileSource ms = new MediaFileSource(file, mimetype);
-		entry.setMediaSource(ms);
 		try
 		{
+			MediaFileSource ms = new MediaFileSource(file, mimetype);
+			entry.setMediaSource(ms);
+			long timems = System.currentTimeMillis();
+			log.info("starting publish to YouTube, ${file.getName()}");
 			VideoEntry inserted = fieldService.insert(new URL(getUploadUrl()), entry);
+			timems = System.currentTimeMillis() - timems;
+			log.info("finished publishing to YouTube, ${file.getName()}, took $timems MS");
 			return inserted.getMediaGroup().getVideoId();
 		}
 		catch (IOException e)
