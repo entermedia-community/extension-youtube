@@ -190,6 +190,8 @@ public class youtubepublisher extends basepublisher implements Publisher
 			{
 				// set metadata field on asset
 				inAsset.setProperty(assetVideoIdField, videoId);
+				//save the asset
+				mediaArchive.getAssetSearcher().saveData(inAsset, null);
 			}
 		}
 		else if (pubstatus.equals("pending"))
