@@ -138,6 +138,12 @@ public class youtubepublisher extends basepublisher implements Publisher
 				
 			}
 
+			if(keylist.isEmpty)
+			{
+				// Add a default keyword
+				keylist.add("default_keyword");
+			}
+
 			List<Category> categories = inAsset.getCategories();
 			log.info("List of categories: ${categories}");
 
