@@ -138,7 +138,7 @@ public class youtubepublisher extends basepublisher implements Publisher
 				
 			}
 
-			if(keylist.isEmpty)
+			if(keylist.isEmpty())
 			{
 				// Add a default keyword
 				keylist.add("default_keyword");
@@ -180,6 +180,8 @@ public class youtubepublisher extends basepublisher implements Publisher
 				// Add a default category
 				catlist.add("default_category");
 			}
+
+			log.info("Final List of Categories: ${catlist}");
 
 			Page inputpage = findInputPage(mediaArchive,inAsset,inPreset);
 			File file = new File(inputpage.getContentItem().getAbsolutePath());
