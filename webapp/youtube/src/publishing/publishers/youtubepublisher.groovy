@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory
 import org.openedit.Data
 import org.openedit.data.Searcher
 import org.openedit.entermedia.Asset
+import org.openedit.entermedia.Category
 import org.openedit.entermedia.MediaArchive
 import org.openedit.entermedia.publishing.*
 
@@ -137,7 +138,7 @@ public class youtubepublisher extends basepublisher implements Publisher
 				
 			}
 
-			List categories = inAsset.getCategories();
+			List<Category> categories = inAsset.getCategories();
 			log.info("List of categories: ${categories}");
 
 			ArrayList<String> catlist = new ArrayList<String>();
