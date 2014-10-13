@@ -130,23 +130,50 @@ public class youtubepublisher extends basepublisher implements Publisher
 			{
 				if (keyword.trim().equals("|"))
 					continue;
-				keylist.add(keyword.trim());
+				// Make sure keyword is greater than 1 byte
+				if(keyword.trim().length() > 1) {
+					keylist.add(keyword.trim());
+				}
+				
 			}
-			String categories = inAsset.get("category");
+
+			List categories = inAsset.getCategories();
+			log.info("List of categories: ${categories}");
+
 			ArrayList<String> catlist = new ArrayList<String>();
-			String [] cats = categories.split(" | ");//categories split on |
-			for (String cat:cats)
+
+			String catname = "";
+
+			int totalCatLength = 0;
+
+			for (Category cat:categories)
 			{
-				if (cat.trim().equals("|"))
-					continue;
-				String [] toks = cat.split("_");
-				for (String tok:toks)
+				catname = cat.getName();
+
+				if(catname.length() >= 3 && catname.length() <= 25) 
 				{
-					if (tok.equals("_") || catlist.contains(tok))
-						continue;
-					catlist.add(tok);
+					totalCatLength += catname.length();
+
+					if(totalCatLength > 240)
+					{
+						log.info("Total Category Length Exceeded 240");
+						break;
+					}
+
+					catlist.add(catname);
+				}
+				else 
+				{
+					log.info("Category omitted because it was < 3Bytes or > 25Bytes: ${catname}");
 				}
 			}
+
+			if(catlist.isEmpty())
+			{
+				// Add a default category
+				catlist.add("default_category");
+			}
+
 			Page inputpage = findInputPage(mediaArchive,inAsset,inPreset);
 			File file = new File(inputpage.getContentItem().getAbsolutePath());
 			String mimeType = inputpage.getMimeType(); //mediaArchive.getOriginalDocument(inAsset).getMimeType();
