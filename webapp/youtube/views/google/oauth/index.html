@@ -1,0 +1,87 @@
+<div class="ui-widget uipanel" style="padding: 40px;">
+	<div class="ui-widget-header">Configuring OAuth for YouTube</div>
+	<div class="ui-widget-content">
+		<h2>OAuth 2.0</h2>
+		<p>
+			OAuth 2.0 allows users to share specific data with you (for example, contact lists) while keeping 
+			their usernames, passwords, and other information private.
+		</p>
+		<br/>
+
+		<h3>Configure YouTube Publishers</h3>
+		<br/>
+		<p>
+			For each YouTube Publisher, set the required fields Client ID, Client Secret, and Redirect URI, then generate the access tokens.
+		</p>
+		
+		#set($searcher = $mediaarchive.getSearcher("publishdestination"))
+		#set($query = $searcher.createSearchQuery())
+		#set($null = $query.addMatches("publishtype","youtube"))
+		#set($hits = $searcher.search($query))
+		#foreach($hit in $hits)
+			<h4>Publisher ID$hit.id: $hit.name</h4>
+			#set($data = $searcher.searchById($hit.id))
+			<form class="ajaxform" targetdiv="editresponse" method="post" action="$home$apphome/views/google/oauth/save.html">
+				<input type="hidden" name="catalogid" value="$catalogid"/>
+				<input type="hidden" name="save" value="true"/>
+				<input type="hidden" name="id" value="$data.id"/>
+				<input type="hidden" name="oemaxlevel" value="1"/>
+				<input type="hidden" name="searchtype" value="publishdestination" />
+				$context.putPageValue("searcher", $searcher)
+				$context.putPageValue("view", "publishdestination/oauth")
+				$context.putPageValue("data", $data)
+				$pages.include("$apphome/components/xml/detaileditor.html", $context)
+				<div id="editresponse" style="display:block;"></div>
+				<p>
+					<input class="btn small" type="submit" value="Save Changes">
+					#if($hit.accesskey && $hit.secretkey && $hit.url)
+						<input 
+							class="btn small generatetoken" 
+							type="button" 
+							value="Generate Access Token" 
+							data-id="$data.id"
+							data-href="https://accounts.google.com/o/oauth2/auth?client_id=${hit.accesskey}&redirect_uri=${hit.url}&scope=https://www.googleapis.com/auth/youtube&response_type=code&access_type=offline">
+					#end
+				</p>
+				
+			</form>
+			
+			<hr>
+		#end
+	</div>
+</div>
+<script>
+#set($D = "$")
+$("#editresponse").bind("DOMSubtreeModified",function(){
+	var html = $(this).html();
+	if (html.contains("fader")){
+		$( "#editresponse").unbind( "DOMSubtreeModified" );
+		var url = "/$applicationid/views/google/oauth/index.html?timestamp="+new Date().getTime();
+		setTimeout(function(){location.href=url;}, 2500);
+	}
+});
+$(".generatetoken").bind("click",function(e){
+	e.preventDefault();
+	var href = $(this).data("href");
+	var id = $(this).data("id");
+	var action = "/$applicationid/views/google/oauth/enable.html";
+	var url = "/$applicationid/views/google/oauth/index.html?timestamp="+new Date().getTime();
+	${D}.ajax({
+		url : action,
+		type: "GET",
+		data: "id="+id+"&oemaxlevel=1",
+		success:function(data, textStatus, jqXHR){
+			if (data.trim() == "ok"){
+				var win = window.open(href, '_blank');
+				win.focus();
+			} else {
+				location.href=url;
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			location.href=url;
+		}
+	});
+	
+});
+</script>

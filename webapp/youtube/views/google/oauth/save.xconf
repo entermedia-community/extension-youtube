@@ -1,0 +1,4 @@
+<page>
+	<path-action name="DataEditModule.saveData"/>
+	<property name="saveokpage">/views/google/oauth/save.html?oemaxlevel=1</property>
+</page>
