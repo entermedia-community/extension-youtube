@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="default" name="extension-youtube">
 
-  <target name="default" depends="clean, compile, jar, zip, publish"/>
+  <target name="default" depends="clean, update-dependencies, compile, jar, zip, publish"/>
   <target name="dependency" depends="default"/>
-   
+	
     <property name="appname" value="${ant.project.name}"/>
     <property name="org" value="OpenEdit, Inc."/>
     <property name="src" location="${basedir}/src"/>
 	<property name="testsrc" location="${basedir}/tests"/>
     <property name="lib" location="${basedir}/lib"/>
-	 <property name="base" location="${basedir}/base"/>
+	<property name="base" location="${basedir}/base"/>
+	<property name="branch" value="dev_"/>
 	
     <property name="etc" location="${basedir}/etc"/>
     <property name="build" location="${basedir}/build"/>
@@ -34,7 +35,13 @@
   	<!-- A convenience variable for documentation output -->
   	<property name="versionDir" location="${deployDir}/${version}"/>
   	<property name="versionedApp" value="${appname}-${version}"/>
-
+  
+	<target name="update-dependencies" depends="clean">
+	     <mkdir dir="${wardir}/WEB-INF/" />
+		 <get dest="${wardir}/WEB-INF/install.xml" src="http://dev.entermediasoftware.com/jenkins/job/${branch}entermedia-server/lastSuccessfulBuild/artifact/deploy/install.xml"/>
+		 <ant antfile="${wardir}/WEB-INF/install.xml" inheritAll="false" dir="${wardir}/WEB-INF/" target="default"/> 
+	</target>
+	
   <target name="clean">
      <delete dir="${build}"/>
   </target>
@@ -55,7 +62,7 @@
 			</fileset>
 		</copy>
 	  
-	    <javac debug="true" destdir="${compiled}" srcdir="${src}" source="1.5" target="1.5">
+	    <javac includeantruntime="false" debug="true" destdir="${compiled}" srcdir="${src}" source="1.5" target="1.5">
 	      <classpath>
 	        <fileset dir="${lib}">
 	          <include name="*.jar"/>
@@ -92,12 +99,7 @@
 
 		</zip>
   </target>
-	    
-	
-	
 
-
-	
 	<target name="publish" depends="zip">
 		  
 			<!-- publish results to anthill -->
