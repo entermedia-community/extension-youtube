@@ -10,7 +10,7 @@
 	<property name="testsrc" location="${basedir}/tests"/>
     <property name="lib" location="${basedir}/lib"/>
 	<property name="base" location="${basedir}/base"/>
-	<property name="branch" value="dev_"/>
+	<property name="branch" value=""/>
 	
     <property name="etc" location="${basedir}/etc"/>
     <property name="build" location="${basedir}/build"/>
@@ -89,17 +89,16 @@
 			</jar>
 	  </target>
  
-	<target name="zip">
+	<target name="zip" depends="compile">
 		<mkdir dir="${deployDir}/builds/"/>
 		<zip destfile="${deployDir}/builds/${appname}.zip" >			
 			<zipfileset dir="${webapp}/youtube" prefix="youtube" />
-
-					<zipfileset dir="${etc}" prefix="etc" includes="install.js" />
+			<zipfileset dir="${etc}" prefix="etc" includes="install.js" />
 			<zipfileset dir="${lib}" prefix="lib" includes="*.jar" />
-
+			<zipfileset dir="${deployDir}/builds/" prefix="lib" includes="${branch}${appname}-${version}.jar" />
 		</zip>
   </target>
-
+	
 	<target name="publish" depends="zip">
 		  
 			<!-- publish results to anthill -->
