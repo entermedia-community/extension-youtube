@@ -4,6 +4,7 @@ importPackage( Packages.java.lang );
 importPackage( Packages.com.openedit.modules.update );
 
 var war = "http://dev.entermediasoftware.com/jenkins/job/extension-youtube/lastSuccessfulBuild/artifact/deploy/extension-youtube.zip";
+var jar = "http://dev.entermediasoftware.com/jenkins/job/extension-youtube/lastSuccessfulBuild/artifact/deploy/extension-youtube*.jar";
 
 var root = moduleManager.getBean("root").getAbsolutePath();
 var web = root + "/WEB-INF";
@@ -12,6 +13,7 @@ var tmp = web + "/tmp";
 log.add("1. GET THE LATEST WAR FILE");
 var downloader = new Downloader();
 downloader.download( war, tmp + "/extension-youtube.zip");
+downloader.download( jar, tmp + "/lib/extension-youtube.jar");
 
 log.add("2. UNZIP WAR FILE");
 var unziper = new ZipUtil();
@@ -35,6 +37,9 @@ files.deleteMatch( web + "/lib/jsr*.jar");
 files.deleteMatch( web + "/lib/transaction-api-*.jar");
 files.deleteMatch( web + "/base/youtube/");
 
+files.deleteMatch( web + "/lib/extension-youtube*.jar");
+
+
 files.copyFileByMatch( tmp + "/lib/google-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/guava-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/tools.jar", web + "/lib/");
@@ -48,6 +53,9 @@ files.copyFileByMatch( tmp + "/lib/jetty-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/jsr*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/transaction-api-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/youtube", web + "/base/youtube");
+
+files.copyFileByMatch( tmp + "/lib/extension-youtube*.jar", web + "/lib/");
+
 
 log.add("4. UPGRADE CART FILES");
 files.deleteAll( root + "/WEB-INF/base/emfrontend/views/google");
