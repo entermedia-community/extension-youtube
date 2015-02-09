@@ -33,7 +33,7 @@ files.deleteMatch( web + "/lib/jdo2-api-*.jar");
 files.deleteMatch( web + "/lib/jetty-*.jar");
 files.deleteMatch( web + "/lib/jsr*.jar");
 files.deleteMatch( web + "/lib/transaction-api-*.jar");
-files.deleteMatch( web + "/lib/*extension-youtube*.jar");
+files.deleteMatch( web + "/lib/extension-youtube*.jar");
 files.deleteMatch( web + "/base/youtube/");
 
 
@@ -49,7 +49,7 @@ files.copyFileByMatch( tmp + "/lib/jdo2-api-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/jetty-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/jsr*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/transaction-api-*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/lib/*extension-youtube*.jar", web + "/lib/");
+files.copyFileByMatch( tmp + "/lib/extension-youtube*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/youtube", web + "/base/youtube");
 
 log.add("4. UPGRADE CART FILES");
