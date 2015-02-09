@@ -54,7 +54,7 @@ files.copyFileByMatch( tmp + "/youtube", web + "/base/youtube");
 
 log.add("4. UPGRADE CART FILES");
 files.deleteAll( root + "/WEB-INF/base/emfrontend/views/google");
-files.copyFiles( tmp + "/youtube/views/google/*", root + "/WEB-INF/base/emfrontend/views/google");
+files.copyFiles( tmp + "/youtube/views/google", root + "/WEB-INF/base/emfrontend/views/google");
 
 log.add("5. CLEAN UP");
 files.deleteAll(tmp);
