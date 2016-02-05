@@ -6,4 +6,6 @@
 	</bean>
 	<bean id="YouTubeModule" class="org.entermedia.youtube.YouTubeModule">
 	</bean>
+		<bean id="youtubepublisher" class="org.entermedia.youtube.YoutubePublisher" />
+	
 </beans>
