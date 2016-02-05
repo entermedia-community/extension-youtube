@@ -20,6 +20,10 @@ public class YoutubePublisher extends BasePublisher implements Publisher
 	
 	public PublishResult publish(MediaArchive mediaArchive, Asset inAsset, Data inPublishRequest, Data inDestination, Data inPreset)
 	{
+		
+		//https://github.com/youtube/api-samples/blob/master/java/src/main/java/com/google/api/services/samples/youtube/cmdline/data/UploadVideo.java
+		//Could be a better way - see above, would support resuming?
+		
 		//setup result object
 		PublishResult result = new PublishResult();
 		
