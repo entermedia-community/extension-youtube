@@ -15,7 +15,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 import com.google.api.client.http.HttpTransport;
@@ -30,6 +29,7 @@ import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.openedit.OpenEditException;
 
 
 
@@ -262,17 +262,9 @@ public class YouTubePublishingService {
             id = publishedvideo.getId();
             log.info("published video: id="+publishedvideo.getId()+", title="+publishedvideo.getSnippet().getTitle());
 		}
-		catch (GoogleJsonResponseException e)
-		{
-			log.error(e.getMessage(),e);
-        }
-		catch (IOException e)
-		{
-			log.error(e.getMessage(),e);
-        } 
 		catch (Exception e)
 		{
-			log.error(e.getMessage(),e);
+			throw new OpenEditException(e); 
         }
 		return id;
 	}
