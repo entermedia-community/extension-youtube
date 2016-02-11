@@ -84,12 +84,14 @@ public class YoutubePublisher extends BasePublisher implements Publisher
 			inPublishRequest.setProperty("errordetails", " ");
 			queuesearcher.saveData(inPublishRequest, null);
 			//publish video and get tracking id
-			log.info("starting to publish asset ID #${inAsset.id} to YouTube");
+			log.info("starting to publish asset ID" + inAsset.getId() + " to YouTube");
 			long ms = System.currentTimeMillis();
 			String videoId = service.publish(access_token, videoPath, title, description, keywords);
 			ms = System.currentTimeMillis() - ms;
-			log.info("finished publishing asset ID #${inAsset.id} to YouTube, took $ms ms, tracking id=$videoId");
+			log.info("finished publishing asset ID " + inAsset.getId() + " to YouTube, took " + ms + "  ms, tracking id=" + videoId);
 			inPublishRequest.setProperty("trackingnumber",videoId);
+			
+
 			queuesearcher.saveData(inPublishRequest, null);//save again
 			//update result
 			result.setPending(true);
@@ -103,7 +105,8 @@ public class YoutubePublisher extends BasePublisher implements Publisher
 		else if (pubstatus.equals("pending") && inPublishRequest.get("trackingnumber") != null){
 			String videoId = inPublishRequest.get("trackingnumber");
 			String videostatus = service.getVideoUploadStatus(access_token, videoId);
-			log.info("video status of #${videoId}, asset ID #${inAsset.id}, is ${videostatus}");
+			log.info("video status of " + videoId + ", asset ID " + inAsset.getId() +"is  " +  videostatus);
+	
 			if (videostatus != null){
 				if (videostatus == "uploaded"){
 					result.setPending(true);

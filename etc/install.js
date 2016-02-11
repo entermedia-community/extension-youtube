@@ -22,7 +22,7 @@ var files = new FileUtils();
 
 files.deleteMatch( web + "/lib/gdata-*.jar");
 files.deleteMatch( web + "/lib/google-*.jar");
-files.deleteMatch( web + "/lib/guava-*.jar");
+//files.deleteMatch( web + "/lib/guava-*.jar");
 files.deleteMatch( web + "/lib/tools.jar");
 files.deleteMatch( web + "/lib/commons-logging*.jar");
 files.deleteMatch( web + "/lib/gson-*.jar");
@@ -38,7 +38,7 @@ files.deleteMatch( web + "/base/youtube/");
 
 
 files.copyFileByMatch( tmp + "/lib/google-*.jar", web + "/lib/");
-files.copyFileByMatch( tmp + "/lib/guava-*.jar", web + "/lib/");
+//files.copyFileByMatch( tmp + "/lib/guava-*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/tools.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/commons-logging*.jar", web + "/lib/");
 files.copyFileByMatch( tmp + "/lib/gson-*.jar", web + "/lib/");
